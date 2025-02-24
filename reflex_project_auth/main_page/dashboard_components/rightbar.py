@@ -8,15 +8,15 @@ def right_sidebar() -> rx.Component:
         rx.vstack(
             rx.heading(
                 "Настройки",
-                class_name="text-2xl tracking-[-0.055em] text-left font-bold font-manrope",
+                class_name="text-2xl font-semibold font-manrope",
             ),
             rx.vstack(
                 # Language selection.
                 rx.box(
                     rx.tooltip(
                         rx.html(
-                            "<u>Язык текста</u>",
-                            class_name="text-sm font-medium",
+                            "Язык текста",
+                            class_name="font-bold font-manrope text-md",
                             margin_bottom="10px",
                         ),
                         content="Язык на котором будет написан документ",
@@ -34,8 +34,8 @@ def right_sidebar() -> rx.Component:
                     rx.hstack(
                         rx.tooltip(
                             rx.html(
-                                f"<u>Креативность: {WorkflowState.creativity}</u>",
-                                class_name="text-sm font-medium",
+                                f"Креативность: {WorkflowState.creativity}",
+                                class_name="font-bold font-manrope text-md",
                                 width="100%",
                             ),
                             content="Креативность определяет разнообразие терминов в тексте. Оптимальное значение: 0.6",
@@ -58,8 +58,8 @@ def right_sidebar() -> rx.Component:
                 rx.box(
                     rx.tooltip(
                         rx.html(
-                            "<u>Количество пунктов в курсовой</u>",
-                            class_name="text-sm font-medium",
+                            "Количество пунктов в курсовой",
+                            class_name="font-bold font-manrope text-md",
                             margin_bottom="10px",
                             width="100%",
                         ),
@@ -84,9 +84,9 @@ def right_sidebar() -> rx.Component:
                 rx.box(
                     rx.tooltip(
                         rx.html(
-                            "<u>Детализация</u>",
+                            "Детализация",
                             margin_bottom="10px",
-                            class_name="text-sm font-medium",
+                            class_name="font-bold font-manrope text-md",
                         ),
                         content="Детализация определяет количество текста в пункте",
                     ),

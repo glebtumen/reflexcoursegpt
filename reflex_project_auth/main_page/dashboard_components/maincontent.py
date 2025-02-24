@@ -7,7 +7,8 @@ def main_content() -> rx.Component:
         rx.cond(
             WorkflowState.work_title == "",
             rx.heading(
-                "Новый документ", class_name="text-2xl font-semibold font-manrope"
+                "Новый документ",
+                class_name="text-2xl tracking-[-0.055em] text-left font-bold font-manrope",
             ),
             rx.vstack(
                 rx.heading(
@@ -16,19 +17,22 @@ def main_content() -> rx.Component:
                     padding_left="2em",
                     padding_right="2em",
                 ),
-                rx.hstack(
-                    rx.button(
-                        "Начать заново",
-                        on_click=WorkflowState.delete_work_title,
-                        class_name="font-light font-manrope rounded-3xl bg-white flex items-center border border-black-300 py-2 px-4 text-center transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none",
+                rx.cond(
+                    WorkflowState.mode == "course",
+                    rx.hstack(
+                        rx.button(
+                            "Начать заново",
+                            on_click=WorkflowState.delete_work_title,
+                            background_color=rx.color("gray", 12),
+                        ),
+                        rx.button(
+                            "Остановить",
+                            on_click=WorkflowState.stop_workflow,
+                            background_color=rx.color("gray", 12),
+                        ),
+                        width="100%",
+                        justify="center",
                     ),
-                    rx.button(
-                        "Остановить",
-                        on_click=WorkflowState.stop_workflow,
-                        class_name="font-light font-manrope rounded-3xl bg-white flex items-center border border-black-300 py-2 px-4 text-center transition-all shadow-sm hover:shadow-lg text-slate-600 hover:text-white hover:bg-slate-800 hover:border-slate-800 focus:text-white focus:bg-slate-800 focus:border-slate-800 active:border-slate-800 active:text-white active:bg-slate-800 disabled:pointer-events-none disabled:opacity-50 disabled:shadow-none",
-                    ),
-                    width="100%",
-                    justify="center",
                 ),
                 align="center",
                 width="100%",
@@ -70,35 +74,75 @@ def main_content() -> rx.Component:
         ),
         # Live updating chat history
         rx.vstack(
-            rx.foreach(
-                WorkflowState.chat_history,
-                lambda message: rx.box(
-                    rx.markdown(
-                        message[0], class_name="text-lg font-manrope font-medium"
-                    ),
-                    rx.cond(
-                        message[1] == "Генерация...",
-                        rx.hstack(
-                            rx.spinner(size="3"),
-                            rx.text(
-                                message[1], class_name="text-md font-manrope font-bold"
+            rx.cond(
+                WorkflowState.mode == "course",
+                rx.scroll_area(
+                    rx.foreach(
+                        WorkflowState.chat_history,
+                        lambda message: rx.box(
+                            rx.markdown(
+                                message[0],
+                                class_name="text-lg font-manrope font-medium",
                             ),
-                            padding="10px",
-                        ),
-                        rx.markdown(
-                            message[1],
-                            class_name="text-[14px] font-manrope font-medium",
+                            rx.cond(
+                                message[1] == "Генерация...",
+                                rx.hstack(
+                                    rx.spinner(size="3"),
+                                    rx.text(
+                                        message[1],
+                                        class_name="text-md font-manrope font-bold",
+                                    ),
+                                ),
+                                rx.markdown(
+                                    message[1],
+                                    class_name="text-[14px] font-manrope font-medium",
+                                ),
+                            ),
+                            padding_right="3em",
+                            padding_left="3em",
                         ),
                     ),
-                    padding_right="3em",
-                    padding_left="3em",
-                    margin_y="0.5em",
+                    type="scroll",
+                    scrollbars="vertical",
+                    style={"height": "30em"},
+                ),
+                rx.scroll_area(
+                    rx.foreach(
+                        WorkflowState.chat_history,
+                        lambda message: rx.box(
+                            rx.markdown(
+                                message[0],
+                                class_name="font-bold font-manrope text-md",
+                            ),
+                            rx.cond(
+                                message[1] == "Генерация...",
+                                rx.hstack(
+                                    rx.spinner(size="3"),
+                                    rx.text(
+                                        message[1],
+                                        class_name="font-bold font-manrope text-md",
+                                    ),
+                                ),
+                                rx.markdown(
+                                    message[1],
+                                    class_name="text-sm font-light font-manrope",
+                                ),
+                            ),
+                            padding_right="3em",
+                            padding_left="3em",
+                        ),
+                    ),
+                    type="scroll",
+                    scrollbars="vertical",
+                    style={"height": "32em"},
                 ),
             ),
             width="100%",
+            spacing="0",
+            height="100%",
         ),
         align="center",
-        padding="4",
+        margin_top="1rem",
         width="100%",
         spacing="4",
     )

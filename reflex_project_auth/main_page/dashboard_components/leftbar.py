@@ -21,7 +21,7 @@ def custom_radio_group(options: list[tuple[str, str, str]]) -> rx.Component:
                         rx.text(label, class_name="font-bold font-manrope text-md"),
                         rx.text(
                             desc,
-                            class_name="text-xs font-light text-black font-manrope",
+                            class_name="text-sm font-light text-black font-manrope",
                         ),
                         spacing="1",
                     ),
@@ -50,7 +50,7 @@ def left_sidebar() -> rx.Component:
     return rx.vstack(
         rx.heading(
             "Режим",
-            class_name="text-2xl tracking-[-0.055em] text-left font-bold font-manrope",
+            class_name="text-2xl font-semibold font-manrope",
         ),
         rx.vstack(
             custom_radio_group(

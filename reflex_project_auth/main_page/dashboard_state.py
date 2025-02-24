@@ -1,10 +1,11 @@
 import os
 from openai import AsyncOpenAI
 import reflex as rx
-from typing import Union, Any, Optional, List
+from typing import Union, Any, List
 from dotenv import load_dotenv
-import asyncio
-import uuid
+
+
+import json
 
 load_dotenv()
 
@@ -70,14 +71,38 @@ class WorkflowState(rx.State):
             "sections": self.sections,
         }
 
-    async def generate_content(self, prompt: str, section_name: str) -> str:
+    async def generate_content(self, prompt: str) -> str:
         """Generate a single variant using OpenAI API."""
         client = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
         temperature = self.creativity / 10
         response = await client.chat.completions.create(
             model="gpt-4o-mini",
-            messages=[{"role": "user", "content": prompt}],
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Ты - профессионал со знаниями в науке, который помогает студентам писать курсовые работы. Ты должен писать ответы максимально полно и так, будто они были написаны студентом.",
+                },
+                {"role": "user", "content": prompt},
+            ],
             temperature=temperature,
+        )
+        return response.choices[0].message.content
+
+    async def generate_content_table(self, prompt: str) -> str:
+        """Generate a single variant using OpenAI API."""
+        client = AsyncOpenAI(api_key=os.environ["OPENAI_API_KEY"])
+        temperature = self.creativity / 10
+        response = await client.chat.completions.create(
+            model="gpt-4o-mini",
+            messages=[
+                {
+                    "role": "system",
+                    "content": "Ты - профессионал со знаниями в науке, который помогает студентам писать курсовые работы. Ты должен писать ответы максимально полно и так, будто они были написаны студентом.",
+                },
+                {"role": "user", "content": prompt},
+            ],
+            temperature=temperature,
+            response_format={"type": "json_object"},
         )
         return response.choices[0].message.content
 
@@ -144,25 +169,158 @@ class WorkflowState(rx.State):
 
         try:
             # Generate Introduction with multiple variants
-            intro_prompt = f"Напиши введение для работы с темой '{self.work_title}', Язык: {self.language}."
+            table_for_intro = """Название курсовой работы
+
+    Вступление курсовой работы
+    Актуальность курсовой работы
+
+    Объект курсовой работы
+    Предмет курсовой работы
+
+    Цель данной курсовой работы (связана с предметом курсовой работы)
+    1)Задача 1;
+    2)Задача 2;
+    3)Задача 3;
+    4)Задача 4;
+    5)Задача 5;"""
+
+            intro_prompt = f"""
+            Пожалуйста, напишите введение для моей курсовой работы на тему [{ self.work_title }].
+            Введение должно предоставить четкий и краткий обзор темы, включая ее актуальность и значимость. 
+            Пожалуйста, убедитесь, что ваше написание подходит для научной аудитории, 
+            используя формальный язык и ссылки на соответствующие источники при необходимости. 
+            Ваш ответ должен быть хорошо структурирован, с логическим потоком мыслей и четким тезисом. 
+            Структура введения: вступление из 2-3 абзацев; актуальность;  объект и предмет изучения; 
+            задачи; 
+            Строго следуй этой структуре: { table_for_intro }
+            Язык: {self.language}."""
+
             async with self:
                 self.chat_history.append(("Введение:", "Генерация..."))
-            intro = await self.generate_content(intro_prompt, "Введение")
+            intro = await self.generate_content(intro_prompt)
             if not self._task_running:
                 return
-
             async with self:
                 self.chat_history[-1] = ("Введение:", intro)
-            # Generate Content Structure with multiple variants
-            content_prompt = f"На основе введения, напиши содержание для работы '{self.work_title}' с {self.points} пунктами. Детализация: {self.detail}."
+
+            # Generate Ending
+            outro_prompt = f"""
+            Напишите заключение для моей курсовой работы на тему "{ self.work_title }",
+            в котором подчеркивается актуальность темы и указываются потенциальные 
+            преимущества предмета темы. Ваше заключение должно  подчеркивать важность
+            темы для решения текущих мировых проблем. Пожалуйста, убедитесь, что ваш вывод четкий, 
+            лаконичный и хорошо структурированный.
+            Язык: {self.language}."""
+
+            async with self:
+                self.chat_history.append(("Заключение:", "Генерация..."))
+            outro = await self.generate_content(outro_prompt)
+            if not self._task_running:
+                return
+            async with self:
+                self.chat_history[-1] = ("Заключение:", outro)
+
+            # Generate Content Structure with multiple variants\
+
+            table_for_content = f"""
+            {"{"}
+        "theory":"Сюда вставить название ТЕОРЕТИЧЕСКОЙ ЧАСТИ(Придумай как назвать теоретическую часть работы)",
+        "theory_points":
+            {"{"}
+                "point1": "сюда вставить пункты теоретической части. сделай {self.points} пунктов",
+            {"}"},
+        "practice":"Сюда вставить название ПРАКТИЧЕСКОЙ ЧАСТИ(Придумай как назвать ПРАКТИЧЕСКуй ЧАСТь работы)",
+        "practice_points":
+            {"{"}
+                "point1": "сюда вставить пункты ПРАКТИЧЕСКОЙ части. сделай {self.points} пунктов",
+            {"}"},
+    {"}"}
+    """
+
+            content_prompt = f"""
+            Напиши содержание для моей курсовой работы на тему { self.work_title }. 
+            Используй формальный язык. Ваш ответ должен быть хорошо структурирован, 
+            с логическим потоком мыслей. строго следуй этой структуре:  { table_for_content }. 
+            Ответ отправь в виде JSON без форматирования, отправляй строго json без md форматирования, 
+            отправляй json 
+            Язык: {self.language}."""
+
             async with self:
                 self.chat_history.append(("Содержание:", "Генерация..."))
-            content = await self.generate_content(content_prompt, "Содержание")
+            content_table = await self.generate_content_table(content_prompt)
             if not self._task_running:
                 return
 
-            async with self:
-                self.chat_history[-1] = ("Содержание:", content)
+            try:
+                content_struct = json.loads(content_table)
+            except Exception as e:
+                return
+            if content_struct:
+
+                readable = "Содержание курсовой работы:\n\n"
+                readable += f"Теоретическая часть: {content_struct.get('theory', '')}\n"
+                for key, point in content_struct.get("theory_points", {}).items():
+                    readable += f" - {point}\n\n"
+                readable += (
+                    "\nПрактическая часть: " + content_struct.get("practice", "") + "\n"
+                )
+                for key, point in content_struct.get("practice_points", {}).items():
+                    readable += f" - {point}\n\n"
+                async with self:
+                    self.chat_history[-1] = ("Содержание:", readable)
+
+                for key, point in content_struct.get("theory_points", {}).items():
+                    if not self._task_running:
+                        return
+                    prompt_detail = f"""Создай текст на тему { point }, который может быть использован в качестве части курсовой работы на тему { self.work_title }.
+    Убедись, что тональность и стиль написания соответствуют научной аудитории. 
+    Текст должен быть читабельным, сложные термины объясни без потери их смысла.
+    используй различные структуры предложений и лексическое разнообразие для более естественного стиля изложения
+    Стилевые приёмы:
+    Чередуй длинные (25+ слов) и короткие (до 8 слов) предложения
+    Используй инверсию в 1-2 предложениях на абзац
+    Добавь 2-3 уточняющих комментария в скобках
+    Добавь детали для контекста,Обогати текст глубоким анализом оставляя профессиональный научный жаргон.
+    Используй простые и сложносочиненные предложения для улучшения читаемости.
+    Запрещены риторические вопросы и разговорные конструкции  
+    70% терминов из глоссария: названия теорий, термины"""
+
+                    async with self:
+                        self.chat_history.append((f"{point}", "Генерация..."))
+
+                    detail_text = await self.generate_content(prompt_detail)
+
+                    async with self:
+                        self.chat_history[-1] = (f"{point}", detail_text)
+
+                for key, point in content_struct.get("practice_points", {}).items():
+                    if not self._task_running:
+                        return
+                    prompt_detail = f"""Создай текст на тему { point }, который может быть использован в качестве части курсовой работы на тему { self.work_title }.
+    Убедись, что тональность и стиль написания соответствуют научной аудитории. 
+    Текст должен быть читабельным, сложные термины объясни без потери их смысла.
+    используй различные структуры предложений и лексическое разнообразие для более естественного стиля изложения
+    Стилевые приёмы:
+    Чередуй длинные (25+ слов) и короткие (до 8 слов) предложения
+    Используй инверсию в 1-2 предложениях на абзац
+    Добавь 2-3 уточняющих комментария в скобках
+    Добавь детали для контекста,Обогати текст глубоким анализом оставляя профессиональный научный жаргон.
+    Используй простые и сложносочиненные предложения для улучшения читаемости.
+    Запрещены риторические вопросы и разговорные конструкции  
+    70% терминов из глоссария: названия теорий, термины"""
+                    async with self:
+                        self.chat_history.append((f"{point}", "Генерация..."))
+                    detail_text = await self.generate_content(prompt_detail)
+                    async with self:
+                        self.chat_history[-1] = (f"{point}", detail_text)
+
+            else:
+                async with self:
+                    self.chat_history[-1] = (
+                        "Содержание:",
+                        "Ошибка парсинга содержимого.",
+                    )
+                return
 
             # Optional: Generate preparation questions if needed
             if self.prepare:
@@ -171,9 +329,7 @@ class WorkflowState(rx.State):
                 )
                 async with self:
                     self.chat_history.append(("Подготовка к защите:", "Генерация..."))
-                prepare_variants = await self.generate_content(
-                    prepare_prompt, "Подготовка к защите"
-                )
+                prepare_variants = await self.generate_content(prepare_prompt)
                 if not self._task_running:
                     return
                 async with self:

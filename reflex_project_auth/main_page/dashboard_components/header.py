@@ -14,6 +14,14 @@ def header() -> rx.Component:
                 rx.text("КурсачГПТ", class_name="text-lg font-medium font-manrope"),
                 align="center",
                 min_width="150px",
+                margin_left="1em",
+            ),
+            rx.callout(
+                "Чтобы делать несколько работ одновременно - скопируй ссылку этой страницы и вставь в новых вкладках",
+                icon="info",
+                color_scheme="green",
+                padding="10px",
+                class_name="text-sm font-light font-manrope",
             ),
             # Right part: Access information and help.
             rx.hstack(
