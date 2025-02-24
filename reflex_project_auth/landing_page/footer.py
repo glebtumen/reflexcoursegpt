@@ -1,31 +1,57 @@
 import reflex as rx
+from reflex.constants.colors import Color
+from dataclasses import dataclass, field
+
+active: Color = rx.color("slate", 12)
+passive: Color = rx.color("slate", 10)
 
 
-def footer_item(text: str, href: str) -> rx.Component:
-    return rx.link(rx.text(text, size="3"), href=href)
+@dataclass
+class FooterV2Style:
+    base: dict[str, str] = field(
+        default_factory=lambda: {
+            "width": "100%",
+            "height": "20vh",
+            "align": "center",
+            "justify": "center",
+            "padding": "0em 1em",
+        },
+    )
+
+    content: dict[str, str] = field(
+        default_factory=lambda: {
+            "width": "100%",
+            "justify": "between",
+            "align": "center",
+            "padding": "1em 2em",
+        },
+    )
+
+    link: dict[str, str] = field(
+        default_factory=lambda: {
+            "color": rx.color("slate", 11),
+            "weight": "medium",
+            "size": "2",
+        },
+    )
+
+    brand: dict[str, str] = field(
+        default_factory=lambda: {"color": active, "size": "2"},
+    )
+
+
+def media(name: str) -> rx.Component:
+    return rx.link(rx.text(name, **FooterV2Style().link), href="#")
 
 
 def footer() -> rx.Component:
-    return rx.el.footer(
+    return rx.vstack(
+        rx.divider(olor=rx.color("slate", 11)),
         rx.hstack(
-            rx.vstack(
-                rx.divider(),
-                rx.hstack(
-                    footer_item("Оферта", "/#"),
-                    footer_item("Terms of Service", "/#"),
-                    rx.flex(
-                        rx.link(rx.icon("send"), rx.text("telegram"), href="/#"),
-                    ),
-                    spacing="4",
-                    justify="between",
-                    align_items="center",
-                    width="100%",
-                    padding_left="50px",
-                    padding_right="50px",
-                ),
-                padding="25px",
-                width="100%",
-            )
+            rx.text("КурсачГПТ 2025", **FooterV2Style().brand),
+            rx.hstack(media("Оферта")),
+            rx.hstack(media("Telegram")),
+            **FooterV2Style().content,
         ),
-        width="100%",
+        **FooterV2Style().base,
     )

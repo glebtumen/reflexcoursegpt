@@ -1,0 +1,105 @@
+import reflex as rx
+from ..dashboard_state import WorkflowState
+
+
+def custom_radio_group(options: list[tuple[str, str, str]]) -> rx.Component:
+    """
+    Render a simple custom radio item without interactive logic.
+    Each option is a tuple of (label, value, description).
+    """
+    return rx.hstack(
+        *[
+            rx.box(
+                rx.hstack(
+                    # Always display the unselected icon.
+                    rx.cond(
+                        WorkflowState.mode == value,
+                        rx.icon("circle-check-big", size=60, stroke_width=2.5),
+                        rx.icon("circle-dashed", size=60, stroke_width=2.5),
+                    ),
+                    rx.vstack(
+                        rx.text(label, class_name="font-bold font-manrope text-md"),
+                        rx.text(
+                            desc,
+                            class_name="text-xs font-light text-black font-manrope",
+                        ),
+                        spacing="1",
+                    ),
+                    style={
+                        "padding": "8px 12px",
+                        "border": "1px solid #ccc",
+                        "borderRadius": "8px",
+                        "cursor": "pointer",
+                        "backgroundColor": rx.cond(
+                            WorkflowState.mode == value, "#F6F6F6", "#ffffff"
+                        ),
+                    },
+                    class_name="custom-radio-item",
+                    align="center",
+                ),
+                on_click=lambda v=value: WorkflowState.set_mode(v),
+            )
+            for label, value, desc in options
+        ],
+        spacing="4",
+        flex_direction="column"
+    )
+
+
+def left_sidebar() -> rx.Component:
+    return rx.vstack(
+        rx.heading(
+            "Режим",
+            class_name="text-2xl tracking-[-0.055em] text-left font-bold font-manrope",
+        ),
+        rx.vstack(
+            custom_radio_group(
+                options=[
+                    (
+                        "Курсовая",
+                        "course",
+                        "В режиме Курсовая можно написать курсовую работу, отправив лишь тему. Используйте настройки, чтобы получить более разнообразный текст",
+                    ),
+                    (
+                        "Свободный режим",
+                        "free",
+                        "В режиме Курсовая можно написать курсовую работу, отправив лишь тему. Используйте настройки, чтобы получить более разнообразный текст",
+                    ),
+                ]
+            ),
+            rx.vstack(
+                rx.hstack(
+                    rx.checkbox(
+                        on_change=WorkflowState.set_search, color_scheme="gray"
+                    ),
+                    rx.text(
+                        "Использовать поиск в интернете",
+                        class_name="text-sm font-light font-manrope",
+                    ),
+                ),
+                rx.hstack(
+                    rx.checkbox(
+                        on_change=WorkflowState.set_prepare, color_scheme="gray"
+                    ),
+                    rx.text(
+                        "Добавить секцию 'Подготовка к защите'",
+                        class_name="text-sm font-light font-manrope",
+                    ),
+                ),
+                rx.hstack(
+                    rx.checkbox(on_change=WorkflowState.set_docx, color_scheme="gray"),
+                    rx.text(
+                        "Вывести текст в файл word.docx",
+                        class_name="text-sm font-light font-manrope",
+                    ),
+                ),
+                spacing="4",
+                margin_top="1em",
+                height="100%",
+            ),
+            spacing="4",
+            height="100%",
+        ),
+        class_name="min-w-80 w-80 border-r p-4",
+        height="100%",
+    )

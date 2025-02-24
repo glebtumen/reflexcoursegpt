@@ -9,6 +9,7 @@ class AppConfig(rx.Config):
 
 config = AppConfig(
     app_name="reflex_project_auth",
+    telemetry_enabled=False,
     env=rx.Env.DEV,
     tailwind={
         "theme": {

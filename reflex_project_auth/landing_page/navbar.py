@@ -5,7 +5,7 @@ def navbar_link(text: str, url: str) -> rx.Component:
     return rx.link(
         rx.text(
             text,
-            class_name="font-manrope text-black text-xl tracking-[-0.01em] font-medium",
+            class_name="text-black font-manrope text-xl tracking-[-0.01em] font-light",
         ),
         href=url,
     )
@@ -18,20 +18,20 @@ def navbar() -> rx.Component:
                 rx.hstack(
                     rx.heading(
                         "КурсачГПТ",
-                        class_name="text-black text-[35px] font-manrope font-extrabold tracking-[-0.055em]",
+                        class_name="text-[35px] font-manrope font-extrabold tracking-[-0.055em]",
                     ),
                     align_items="center",
                     margin="20px",
                     margin_left="55px",
                 ),
                 rx.hstack(
-                    navbar_link("Цены", "/#"),
-                    navbar_link("FAQ", "/#"),
-                    navbar_link("Поддержка", "/#"),
+                    navbar_link("Цены", "/#price"),
+                    navbar_link("FAQ", "/#faq"),
+                    navbar_link("Поддержка", "https://t.me/wlzeusgod"),
                     rx.button(
                         "Вход",
                         href="/login",
-                        class_name="text-white text-[17.7px] tracking-[-0.035em] font-medium font-manrope rounded-[47px] px-6 py-6 bg-[#212227]",
+                        class_name="text-white text-[17.7px] tracking-[-0.035em] font-light font-manrope rounded-[47px] px-6 py-6 bg-[#212227]",
                     ),
                     spacing="5",
                     align="center",
@@ -39,7 +39,6 @@ def navbar() -> rx.Component:
                 justify="between",
                 align_items="center",
                 margin_right="55px",
-                padding="25px",
             ),
         ),
         rx.mobile_and_tablet(
@@ -47,7 +46,7 @@ def navbar() -> rx.Component:
                 rx.hstack(
                     rx.heading(
                         "КурсачГПТ",
-                        class_name="text-black text-[35px] font-manrope font-extrabold tracking-[-0.055em]",
+                        class_name="text-[35px] font-manrope font-extrabold tracking-[-0.055em]",
                     ),
                     align_items="center",
                     margin="20px",
