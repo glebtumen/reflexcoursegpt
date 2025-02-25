@@ -8,12 +8,12 @@ def main_content() -> rx.Component:
             WorkflowState.work_title == "",
             rx.heading(
                 "Новый документ",
-                class_name="text-2xl tracking-[-0.055em] text-left font-bold font-manrope",
+                class_name="text-xl tracking-[-0.055em] text-left font-bold font-manrope",
             ),
             rx.vstack(
                 rx.heading(
                     WorkflowState.work_title,
-                    class_name="text-2xl font-semibold font-manrope",
+                    class_name="text-xl font-semibold font-manrope",
                     padding_left="2em",
                     padding_right="2em",
                 ),
@@ -47,7 +47,7 @@ def main_content() -> rx.Component:
                     required=True,
                     disabled=WorkflowState.is_processing,
                     width="100%",
-                    max_length=100,
+                    max_length=255,
                 ),
                 rx.cond(
                     WorkflowState.is_processing,
@@ -80,9 +80,22 @@ def main_content() -> rx.Component:
                     rx.foreach(
                         WorkflowState.chat_history,
                         lambda message: rx.box(
-                            rx.markdown(
-                                message[0],
-                                class_name="text-lg font-manrope font-medium",
+                            rx.hstack(
+                                rx.markdown(
+                                    message[0],
+                                    class_name="font-medium font-manrope text-lg",
+                                ),
+                                rx.button(
+                                    "Копировать",
+                                    on_click=rx.set_clipboard(message[1]),
+                                    size="1",
+                                    variant="soft",
+                                    color_scheme="gray",
+                                    high_contrast=True,
+                                    radius="large",
+                                ),
+                                align="center",
+                                justify="between",
                             ),
                             rx.cond(
                                 message[1] == "Генерация...",
@@ -90,12 +103,15 @@ def main_content() -> rx.Component:
                                     rx.spinner(size="3"),
                                     rx.text(
                                         message[1],
-                                        class_name="text-md font-manrope font-bold",
+                                        class_name="text-[13px] font-manrope font-regular",
                                     ),
                                 ),
-                                rx.markdown(
-                                    message[1],
-                                    class_name="text-[14px] font-manrope font-medium",
+                                rx.vstack(
+                                    rx.markdown(
+                                        message[1],
+                                        class_name="text-[13px] font-manrope font-regular",
+                                    ),
+                                    align="center",
                                 ),
                             ),
                             padding_right="3em",
@@ -110,9 +126,22 @@ def main_content() -> rx.Component:
                     rx.foreach(
                         WorkflowState.chat_history,
                         lambda message: rx.box(
-                            rx.markdown(
-                                message[0],
-                                class_name="font-bold font-manrope text-md",
+                            rx.hstack(
+                                rx.markdown(
+                                    message[0],
+                                    class_name="font-medium font-manrope text-lg",
+                                ),
+                                rx.button(
+                                    "Копировать",
+                                    on_click=rx.set_clipboard(message[1]),
+                                    size="1",
+                                    variant="soft",
+                                    color_scheme="gray",
+                                    high_contrast=True,
+                                    radius="large",
+                                ),
+                                align="center",
+                                justify="between",
                             ),
                             rx.cond(
                                 message[1] == "Генерация...",
@@ -120,12 +149,12 @@ def main_content() -> rx.Component:
                                     rx.spinner(size="3"),
                                     rx.text(
                                         message[1],
-                                        class_name="font-bold font-manrope text-md",
+                                        class_name="font-regular font-manrope text-[13px]",
                                     ),
                                 ),
                                 rx.markdown(
                                     message[1],
-                                    class_name="text-sm font-light font-manrope",
+                                    class_name="text-[13px] font-regular font-manrope",
                                 ),
                             ),
                             padding_right="3em",

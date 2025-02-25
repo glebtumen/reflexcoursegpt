@@ -12,16 +12,16 @@ def custom_radio_group(options: list[tuple[str, str, str]]) -> rx.Component:
             rx.box(
                 rx.hstack(
                     # Always display the unselected icon.
-                    rx.cond(
-                        WorkflowState.mode == value,
-                        rx.icon("circle-check-big", size=60, stroke_width=2.5),
-                        rx.icon("circle-dashed", size=60, stroke_width=2.5),
-                    ),
+                    # rx.cond(
+                    #     WorkflowState.mode == value,
+                    #     rx.icon("circle-check-big", size=60, stroke_width=2.5),
+                    #     rx.icon("circle-dashed", size=60, stroke_width=2.5),
+                    # ),
                     rx.vstack(
-                        rx.text(label, class_name="font-bold font-manrope text-md"),
+                        rx.text(label, class_name="font-bold font-manrope text-[13px]"),
                         rx.text(
                             desc,
-                            class_name="text-sm font-light text-black font-manrope",
+                            class_name="text-[13px] font-regular text-black font-manrope",
                         ),
                         spacing="1",
                     ),
@@ -31,7 +31,7 @@ def custom_radio_group(options: list[tuple[str, str, str]]) -> rx.Component:
                         "borderRadius": "8px",
                         "cursor": "pointer",
                         "backgroundColor": rx.cond(
-                            WorkflowState.mode == value, "#F6F6F6", "#ffffff"
+                            WorkflowState.mode == value, "#F1F1F1", "#ffffff"
                         ),
                     },
                     class_name="custom-radio-item",
@@ -50,7 +50,7 @@ def left_sidebar() -> rx.Component:
     return rx.vstack(
         rx.heading(
             "Режим",
-            class_name="text-2xl font-semibold font-manrope",
+            class_name="text-xl font-semibold font-manrope",
         ),
         rx.vstack(
             custom_radio_group(
@@ -58,44 +58,14 @@ def left_sidebar() -> rx.Component:
                     (
                         "Курсовая",
                         "course",
-                        "В режиме Курсовая можно написать курсовую работу, отправив лишь тему. Используйте настройки, чтобы получить более разнообразный текст",
+                        "В режиме курсовая можно написать курсовую работу, отправив лишь тему. Используйте настройки, чтобы получить более разнообразный текст",
                     ),
                     (
                         "Свободный режим",
                         "free",
-                        "В режиме Курсовая можно написать курсовую работу, отправив лишь тему. Используйте настройки, чтобы получить более разнообразный текст",
+                        "Свободный режим нужен для индивидуальный просьб (например, оформить источники). Работает, как обычный чат, задай вопрос - получи ответ",
                     ),
                 ]
-            ),
-            rx.vstack(
-                rx.hstack(
-                    rx.checkbox(
-                        on_change=WorkflowState.set_search, color_scheme="gray"
-                    ),
-                    rx.text(
-                        "Использовать поиск в интернете",
-                        class_name="text-sm font-light font-manrope",
-                    ),
-                ),
-                rx.hstack(
-                    rx.checkbox(
-                        on_change=WorkflowState.set_prepare, color_scheme="gray"
-                    ),
-                    rx.text(
-                        "Добавить секцию 'Подготовка к защите'",
-                        class_name="text-sm font-light font-manrope",
-                    ),
-                ),
-                rx.hstack(
-                    rx.checkbox(on_change=WorkflowState.set_docx, color_scheme="gray"),
-                    rx.text(
-                        "Вывести текст в файл word.docx",
-                        class_name="text-sm font-light font-manrope",
-                    ),
-                ),
-                spacing="4",
-                margin_top="1em",
-                height="100%",
             ),
             spacing="4",
             height="100%",

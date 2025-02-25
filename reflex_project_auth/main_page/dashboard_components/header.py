@@ -11,17 +11,21 @@ def header() -> rx.Component:
                     alt="Logo",
                     class_name="w-10 h-10",
                 ),
-                rx.text("КурсачГПТ", class_name="text-lg font-medium font-manrope"),
+                rx.text("КурсачГПТ", class_name="text-xl font-medium font-manrope"),
+                rx.hover_card.root(
+                    rx.hover_card.trigger(
+                        rx.icon("circle-help", class_name="w-5 h-5"),
+                    ),
+                    rx.hover_card.content(
+                        rx.text(
+                            "Чтобы делать несколько работ одновременно - скопируй ссылку этой страницы и вставь в новых вкладках",
+                            class_name="text-[13px] font-medium font-manrope",
+                        ),
+                    ),
+                ),
                 align="center",
                 min_width="150px",
                 margin_left="1em",
-            ),
-            rx.callout(
-                "Чтобы делать несколько работ одновременно - скопируй ссылку этой страницы и вставь в новых вкладках",
-                icon="info",
-                color_scheme="green",
-                padding="10px",
-                class_name="text-sm font-light font-manrope",
             ),
             # Right part: Access information and help.
             rx.hstack(
@@ -31,7 +35,7 @@ def header() -> rx.Component:
                         rx.link(
                             rx.html(
                                 "<u>Доступ до: 25.06.2025</u>",
-                                class_name="text-[#f0b41b]",
+                                class_name="text-[#f0b41b] text-[13px] font-medium font-manrope",
                             ),
                             href="/subscribe",
                         ),
@@ -39,7 +43,7 @@ def header() -> rx.Component:
                             rx.link(
                                 rx.html(
                                     "<u>Нет доступа</u>",
-                                    class_name="text-[#f0b41b]",
+                                    class_name="text-[#f0b41b] text-[13px] font-medium font-manrope",
                                 ),
                                 href="/subscribe",
                             ),
