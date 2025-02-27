@@ -2,6 +2,8 @@ import reflex as rx
 from .faq import faq_v1
 from .background_v3 import background_v3
 
+import reflex as rx
+
 
 def subscription_card() -> rx.Component:
     return rx.vstack(
@@ -14,7 +16,7 @@ def subscription_card() -> rx.Component:
                 ),
                 align="center",
                 justify="center",
-                class_name="rounded-[100px] px-[15px] py-[1.5px] bg-[#1c2024] justify-center",
+                class_name="rounded-[100px] px-[15px] py-[1.5px] bg-black justify-center",
             ),
             rx.hstack(
                 rx.text(
@@ -32,7 +34,10 @@ def subscription_card() -> rx.Component:
         # Price and description.
         rx.vstack(
             rx.hstack(
-                rx.text("₽499", class_name="font-extrabold font-manrope text-[52px]"),
+                rx.text(
+                    "₽499",
+                    class_name="text-black font-extrabold font-manrope text-[52px]",
+                ),
                 rx.text(
                     "/неделя",
                     class_name="font-medium font-manrope text-[22px]",
@@ -103,7 +108,7 @@ def subscription_card() -> rx.Component:
             width="100%",
             align="center",
             justify="center",
-            background="#262626",
+            background="black",
             class_name="rounded-[12px]",
         ),
         # Features list.
@@ -170,7 +175,7 @@ def subscription_card() -> rx.Component:
         ),
         align="start",
         justify="start",
-        width="48%",
+        width="600px",
         padding="20px",
         class_name="border-2 border-black shadow-[0_6px_0_0_black] p-4 rounded-lg bg-white",
     )
@@ -182,27 +187,10 @@ def main_content() -> rx.Component:
             rx.vstack(
                 rx.vstack(
                     background_v3(),
-                    rx.html(
-                        "Лучший помощник для написания<br>студенческих работ!",
-                        class_name=" text-lg md:text-xl lg:text-[1.5rem] tracking-[-0.035em] text-center font-light font-manrope",
-                    ),
-                    rx.button(
-                        rx.flex(
-                            rx.text("Начать"),
-                            rx.icon("arrow-right", size=15),
-                            align="center",
-                            justify="center",
-                            spacing="3",
-                            padding_left="1.5rem",
-                            padding_right="1rem",
-                        ),
-                        class_name="text-white text-[17.7px] tracking-[-0.035em] font-light font-manrope rounded-[47px] py-6 bg-[#212227]",
-                    ),
                     rx.image(
                         src="/screen1.png",
                         class_name="rounded-[18px] md:rounded-lg lg:rounded-lg border-[#212227] shadow-[0_6px_0_0_#212227]",
                         border_width="medium",
-                        margin_top="55px",
                     ),
                     spacing="8",
                     align="center",
@@ -210,11 +198,11 @@ def main_content() -> rx.Component:
                 rx.vstack(
                     rx.html(
                         "Настраивай запросы<br>для каждой работы",
-                        class_name=" text-4xl md:text-6xl lg:text-6xl tracking-[-0.055em] text-center font-extrabold font-manrope",
+                        class_name="text-black text-4xl md:text-6xl lg:text-6xl tracking-[-0.055em] text-center font-extrabold font-manrope",
                     ),
                     rx.text(
                         "Три режима для удобной работы c курсовыми",
-                        class_name=" text-sm md:text-[1.5rem] lg:text-[1.5rem] tracking-[-0.035em] text-center font-light font-manrope",
+                        class_name=" text-[1.5rem] tracking-[-0.035em] text-center font-medium font-manrope",
                     ),
                     rx.hstack(
                         rx.image(
@@ -237,7 +225,7 @@ def main_content() -> rx.Component:
                 rx.vstack(
                     rx.html(
                         "Одна оплата —<br> неограниченное количество работ",
-                        class_name=" text-2xl md:text-4xl lg:text-5xl tracking-[-0.055em] text-center font-extrabold font-manrope",
+                        class_name="text-black text-2xl md:text-4xl lg:text-5xl tracking-[-0.055em] text-center font-extrabold font-manrope",
                     ),
                     subscription_card(),
                     id="price",
@@ -248,7 +236,7 @@ def main_content() -> rx.Component:
                 rx.vstack(
                     rx.html(
                         "Часто задаваемые вопросы",
-                        class_name=" text-left text-5xl tracking-[-0.055em] font-extrabold font-manrope",
+                        class_name="text-black text-left text-5xl tracking-[-0.055em] font-extrabold font-manrope",
                     ),
                     align="center",
                     margin_top="3em",

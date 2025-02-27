@@ -40,14 +40,25 @@ def main_content() -> rx.Component:
         ),
         rx.form.root(
             rx.hstack(
-                rx.input(
-                    name="title",
-                    placeholder="Введите тему работы...",
-                    type="text",
-                    required=True,
-                    disabled=WorkflowState.is_processing,
-                    width="100%",
-                    max_length=255,
+                rx.cond(
+                    WorkflowState.mode == "course",
+                    rx.input(
+                        name="title",
+                        placeholder="Введите тему работы...",
+                        type="text",
+                        required=True,
+                        disabled=WorkflowState.is_processing,
+                        width="100%",
+                        max_length=255,
+                    ),
+                    rx.input(
+                        name="title",
+                        placeholder="Введите свой запрос...",
+                        type="text",
+                        required=True,
+                        disabled=WorkflowState.is_processing,
+                        width="100%",
+                    ),
                 ),
                 rx.cond(
                     WorkflowState.is_processing,
@@ -99,13 +110,7 @@ def main_content() -> rx.Component:
                             ),
                             rx.cond(
                                 message[1] == "Генерация...",
-                                rx.hstack(
-                                    rx.spinner(size="3"),
-                                    rx.text(
-                                        message[1],
-                                        class_name="text-[13px] font-manrope font-regular",
-                                    ),
-                                ),
+                                rx.hstack(),
                                 rx.vstack(
                                     rx.markdown(
                                         message[1],

@@ -5,7 +5,7 @@ def navbar_link(text: str, url: str) -> rx.Component:
     return rx.link(
         rx.text(
             text,
-            class_name="text-black font-manrope text-xl tracking-[-0.01em] font-light",
+            class_name="text-black font-manrope text-[15px] tracking-[-0.01em] font-regular",
         ),
         href=url,
     )
@@ -18,27 +18,28 @@ def navbar() -> rx.Component:
                 rx.hstack(
                     rx.heading(
                         "КурсачГПТ",
-                        class_name="text-[35px] font-manrope font-extrabold tracking-[-0.055em]",
+                        class_name="text-xl font-manrope font-extrabold tracking-[-0.055em]",
                     ),
-                    align_items="center",
-                    margin="20px",
-                    margin_left="55px",
-                ),
-                rx.hstack(
-                    navbar_link("Цены", "/#price"),
-                    navbar_link("FAQ", "/#faq"),
-                    navbar_link("Поддержка", "https://t.me/wlzeusgod"),
-                    rx.button(
-                        "Вход",
-                        href="/login",
-                        class_name="text-white text-[17.7px] tracking-[-0.035em] font-light font-manrope rounded-[47px] px-6 py-6 bg-[#212227]",
+                    rx.hstack(
+                        navbar_link("Цены", "/#price"),
+                        navbar_link("FAQ", "/#faq"),
+                        navbar_link("Поддержка", "https://t.me/wlzeusgod"),
+                        align_items="center",
+                        margin="20px",
+                        margin_left="55px",
                     ),
-                    spacing="5",
                     align="center",
+                ),
+                rx.button(
+                    "Вход",
+                    href="/login",
+                    class_name="text-white text-[15px] tracking-[-0.035em] font-regular font-manrope rounded px-4 py-4 bg-[#212227]",
+                    width="70px",
                 ),
                 justify="between",
                 align_items="center",
                 margin_right="55px",
+                margin_left="55px",
             ),
         ),
         rx.mobile_and_tablet(
@@ -61,8 +62,9 @@ def navbar() -> rx.Component:
                 margin_right="20px",
             ),
         ),
-        class_name="shadow-[0px_4px_10px_0px_#f0f0f0]",
+        class_name="border-b",
         top="35px",
-        # z_index="5",
+        z_index="5",
         width="100%",
+        background="white",
     )
