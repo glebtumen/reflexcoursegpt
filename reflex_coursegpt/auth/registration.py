@@ -151,7 +151,7 @@ def reg_panel() -> rx.Component:
                             "Confirm Password",
                             "***",
                             "password",
-                            "password",
+                            "confirm_password",
                         ),
                         spacing="3",
                         flex_direction=[

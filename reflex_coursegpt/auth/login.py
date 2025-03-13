@@ -133,7 +133,6 @@ def login_panel() -> rx.Component:
                     ),
                     rx.form.submit(
                         rx.button("Войти", is_loading=LoginState.is_loading),
-                        rx.button("Войти", is_loading=True),
                         as_child=True,
                     ),
                     rx.link(rx.text("Регистрация"), href=REGISTER_ROUTE),
