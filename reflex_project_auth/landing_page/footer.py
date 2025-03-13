@@ -37,7 +37,6 @@ class FooterV2Style:
 
     brand: dict[str, str] = field(
         default_factory=lambda: {
-            "padding": "1em 2em",
             "weight": "medium",
         },
     )

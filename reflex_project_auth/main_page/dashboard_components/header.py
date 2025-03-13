@@ -29,12 +29,19 @@ def header() -> rx.Component:
             ),
             # Right part: Access information and help.
             rx.hstack(
-                rx.vstack(
+                rx.hstack(
+                    rx.link(
+                        rx.html(
+                            "Техподдержка",
+                            class_name="text-black text-[13px] font-medium font-manrope",
+                        ),
+                        href="https://t.me/wlzeusgod",
+                    ),
                     rx.cond(
                         False,
                         rx.link(
                             rx.html(
-                                "<u>Доступ до: 25.06.2025</u>",
+                                "Доступ до: 25.06.2025",
                                 class_name="text-[#f0b41b] text-[13px] font-medium font-manrope",
                             ),
                             href="/subscribe",

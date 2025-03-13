@@ -209,6 +209,7 @@ def new_password_email_panel() -> rx.Component:
                 # on_submit=ResetPasswordState.send_reset_email,
             ),
             width="48%",
+            min_width="300px",
             max_width="400px",
             direction="column",
             spacing="4",

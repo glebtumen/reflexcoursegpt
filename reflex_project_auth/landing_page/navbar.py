@@ -55,7 +55,8 @@ def navbar() -> rx.Component:
                 rx.button(
                     "Вход",
                     href="/login",
-                    class_name="text-white text-[17.7px] tracking-[-0.035em] font-medium font-manrope rounded-[47px] px-6 py-6 bg-[#212227]",
+                    class_name="text-white text-[15px] tracking-[-0.035em] font-regular font-manrope rounded px-4 py-4 bg-[#212227]",
+                    width="70px",
                 ),
                 justify="between",
                 align_items="center",

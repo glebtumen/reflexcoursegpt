@@ -34,13 +34,13 @@ def background_v3():
         rx.center(
             rx.vstack(
                 rx.html(
-                    "Твой ИИ-помощник<br>для курсовых",
+                    "Делай курсовые мгновенно<br>с помощью ИИ",
                     class_name=" text-[5.5rem] tracking-[-0.055em] text-center text-black font-extrabold font-manrope",
                     line_height="4.5rem",
                 ),
                 rx.html(
-                    "Нужна только <u>тема работы</u>!",
-                    class_name=" text-[1.5rem] tracking-[-0.035em] text-center font-medium font-manrope",
+                    "Детальные настройки, поиск в интернете, создавай несколько курсовых одновременно.<br>Не теряй времени!",
+                    class_name=" text-[1.3rem] tracking-[-0.035em] text-center font-medium font-manrope",
                 ),
                 input_field(),
                 # mask="radial-gradient(50% 100% at 50% 50%, hsl(0, 0%, 0%, 1), hsl(0, 0%, 0%, 0.7))",

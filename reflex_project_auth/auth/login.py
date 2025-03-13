@@ -145,6 +145,7 @@ def login_panel() -> rx.Component:
                 reset_on_submit=False,
             ),
             width="48%",
+            min_width="300px",
             max_width="400px",
             direction="column",
             spacing="4",
