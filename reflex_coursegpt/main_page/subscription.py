@@ -1,7 +1,7 @@
 import reflex as rx
 
-# from ..removed.base_state import State
-# from ..auth/login import require_login
+from ..base_state import State
+from ..auth.login import require_login
 
 
 class SubscriptionState(rx.State):
@@ -317,7 +317,7 @@ def subscription_card() -> rx.Component:
 
 
 @rx.page(route="/subscribe")
-# @require_login
+@require_login
 def subscription_page() -> rx.Component:
     return rx.hstack(
         subscription_card(),

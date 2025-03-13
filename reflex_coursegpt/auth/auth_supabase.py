@@ -2,9 +2,9 @@
 
 import reflex as rx
 
-from ..removed.base_state import State
-from ..auth.registration import registration_page as registration_page
-from ..auth.login import require_login
+from ..base_state import State
+from .registration import registration_page
+from .login import require_login
 
 
 def show_logout_or_login_comp() -> rx.Component:
@@ -54,8 +54,3 @@ def protected() -> rx.Component:
         rx.link("Home", href="/"),
         rx.link("Logout", href="/", on_click=State.do_logout),
     )
-
-
-# app = rx.App()
-# app.add_page(index)
-# app.add_page(protected)

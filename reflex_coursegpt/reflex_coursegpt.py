@@ -1,7 +1,7 @@
 import reflex as rx
 
-# from ..removed.base_state import State
-# from .auth.login import require_login
+from .base_state import State
+from .auth.login import require_login
 from .auth.registration import registration_page
 from .auth.login import login_page
 from .auth.reset_password import reset_password_page

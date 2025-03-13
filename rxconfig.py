@@ -8,8 +8,9 @@ class AppConfig(rx.Config):
 
 
 config = AppConfig(
-    app_name="reflex_project_auth",
+    app_name="reflex_coursegpt",
     telemetry_enabled=False,
+    show_built_with_reflex=False,
     env=rx.Env.DEV,
     tailwind={
         "theme": {

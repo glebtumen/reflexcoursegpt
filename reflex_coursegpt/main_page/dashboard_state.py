@@ -195,64 +195,64 @@ class WorkflowState(rx.State):
             self.chat_history = []
 
         try:
-            # # Generate Introduction with multiple variants
-            # table_for_intro = """
-            # Вступление курсовой работы
-            # Актуальность курсовой работы
+            # Generate Introduction with multiple variants
+            table_for_intro = """
+            Вступление курсовой работы
+            Актуальность курсовой работы
 
-            # Объект курсовой работы
-            # Предмет курсовой работы
+            Объект курсовой работы
+            Предмет курсовой работы
 
-            # Цель данной курсовой работы (связана с предметом курсовой работы)
-            # 1)Задача 1;
-            # 2)Задача 2;
-            # 3)Задача 3;
-            # 4)Задача 4;
-            # 5)Задача 5;"""
+            Цель данной курсовой работы (связана с предметом курсовой работы)
+            1)Задача 1;
+            2)Задача 2;
+            3)Задача 3;
+            4)Задача 4;
+            5)Задача 5;"""
 
-            # intro_prompt = f"""
-            #         Пожалуйста, напишите введение для моей курсовой работы на тему [{ self.work_title }].
-            #         Введение должно предоставить четкий и краткий обзор темы, включая ее актуальность и значимость.
-            #         Пожалуйста, убедитесь, что ваше написание подходит для научной аудитории.
-            #         Ваш ответ должен быть хорошо структурирован, с логическим потоком мыслей и четким тезисом.
-            #         Структура введения: вступление из 2-3 абзацев; актуальность;  объект и предмет изучения;
-            #         задачи; краткий обзор -
-            #         Строго следуй этой структуре: { table_for_intro }
-            #         Пиши на на языке: {self.language}.
-            #         Количество текста: {self.detail_description}."""
+            intro_prompt = f"""
+                    Пожалуйста, напишите введение для моей курсовой работы на тему [{ self.work_title }].
+                    Введение должно предоставить четкий и краткий обзор темы, включая ее актуальность и значимость.
+                    Пожалуйста, убедитесь, что ваше написание подходит для научной аудитории.
+                    Ваш ответ должен быть хорошо структурирован, с логическим потоком мыслей и четким тезисом.
+                    Структура введения: вступление из 2-3 абзацев; актуальность;  объект и предмет изучения;
+                    задачи; краткий обзор -
+                    Строго следуй этой структуре: { table_for_intro }
+                    Пиши на на языке: {self.language}.
+                    Количество текста: {self.detail_description}."""
 
-            # async with self:
-            #     if not self._task_running:
-            #         return
-            #     self.chat_history.append(("Введение:", "Генерация..."))
+            async with self:
+                if not self._task_running:
+                    return
+                self.chat_history.append(("Введение:", "Генерация..."))
 
-            # intro = await generate_content(intro_prompt, self.creativity, self.language)
+            intro = await generate_content(intro_prompt, self.creativity, self.language)
 
-            # async with self:
-            #     if not self._task_running:
-            #         return
-            #     self.chat_history[-1] = ("Введение:", intro)
+            async with self:
+                if not self._task_running:
+                    return
+                self.chat_history[-1] = ("Введение:", intro)
 
-            # # Generate Ending
-            # outro_prompt = f"""
-            #         Напишите заключение для моей курсовой работы на тему "{ self.work_title }",
-            #         в котором подчеркивается актуальность темы и указываются потенциальные
-            #         преимущества предмета темы. Ваше заключение должно  подчеркивать важность
-            #         темы для решения текущих мировых проблем. Пожалуйста, убедитесь, что ваш вывод четкий,
-            #         лаконичный и хорошо структурированный.
-            #         Пиши на на языке: {self.language}.
-            #         Количество текста: {self.detail_description}."""
+            # Generate Ending
+            outro_prompt = f"""
+                    Напишите заключение для моей курсовой работы на тему "{ self.work_title }",
+                    в котором подчеркивается актуальность темы и указываются потенциальные
+                    преимущества предмета темы. Ваше заключение должно  подчеркивать важность
+                    темы для решения текущих мировых проблем. Пожалуйста, убедитесь, что ваш вывод четкий,
+                    лаконичный и хорошо структурированный.
+                    Пиши на на языке: {self.language}.
+                    Количество текста: {self.detail_description}."""
 
-            # async with self:
-            #     if not self._task_running:
-            #         return
-            #     self.chat_history.append(("Заключение:", "Генерация..."))
-            # outro = await generate_content(outro_prompt, self.creativity, self.language)
+            async with self:
+                if not self._task_running:
+                    return
+                self.chat_history.append(("Заключение:", "Генерация..."))
+            outro = await generate_content(outro_prompt, self.creativity, self.language)
 
-            # async with self:
-            #     if not self._task_running:
-            #         return
-            #     self.chat_history[-1] = ("Заключение:", outro)
+            async with self:
+                if not self._task_running:
+                    return
+                self.chat_history[-1] = ("Заключение:", outro)
 
             # Generate Content Structure with multiple variants
 

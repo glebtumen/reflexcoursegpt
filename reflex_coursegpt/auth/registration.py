@@ -7,11 +7,11 @@ from collections.abc import AsyncGenerator
 from reflex.event import EventSpec
 import reflex as rx
 
-# from ..removed.base_state import State
+from ..base_state import State
 from .login import LOGIN_ROUTE, REGISTER_ROUTE
 import re
 
-# from ..auth.supabase__client import supabase_client
+from .supabase__client import supabase_client
 
 
 import logging
@@ -19,79 +19,79 @@ import logging
 logging.basicConfig(level=logging.INFO)
 
 
-# class RegistrationState(State):
-#     """Handle registration form submission and redirect to login page after registration."""
+class RegistrationState(State):
+    """Handle registration form submission and redirect to login page after registration."""
 
-#     success: bool = False
-#     error_message: str = ""
+    success: bool = False
+    error_message: str = ""
 
-#     is_loading: bool = False
+    is_loading: bool = False
 
-#     async def handle_registration(
-#         self, form_data
-#     ) -> AsyncGenerator[EventSpec | list[EventSpec] | None, None]:
-#         """Handle registration form on_submit.
+    async def handle_registration(
+        self, form_data
+    ) -> AsyncGenerator[EventSpec | list[EventSpec] | None, None]:
+        """Handle registration form on_submit.
 
-#         Set error_message appropriately based on validation results.
+        Set error_message appropriately based on validation results.
 
-#         Args:
-#             form_data: A dict of form fields and values.
-#         """
+        Args:
+            form_data: A dict of form fields and values.
+        """
 
-#         # set the following values to spin the button
-#         self.is_loading = True
-#         yield
+        # set the following values to spin the button
+        self.is_loading = True
+        yield
 
-#         email = form_data["email"]
-#         if not email:
-#             self.error_message = "email cannot be empty"
-#             rx.set_focus("email")
-#             # reset state variable again
-#             self.is_loading = False
-#             yield
-#             return
-#         if not is_valid_email(email):
-#             self.error_message = "email is not a valid email address."
-#             rx.set_focus("email")
-#             # reset state variable again
-#             self.is_loading = False
-#             yield
-#             return
+        email = form_data["email"]
+        if not email:
+            self.error_message = "email cannot be empty"
+            rx.set_focus("email")
+            # reset state variable again
+            self.is_loading = False
+            yield
+            return
+        if not is_valid_email(email):
+            self.error_message = "email is not a valid email address."
+            rx.set_focus("email")
+            # reset state variable again
+            self.is_loading = False
+            yield
+            return
 
-#         password = form_data["password"]
-#         if not password:
-#             self.error_message = "Password cannot be empty"
-#             rx.set_focus("password")
-#             # reset state variable again
-#             self.is_loading = False
-#             yield
-#             return
-#         if password != form_data["confirm_password"]:
-#             self.error_message = "Passwords do not match"
-#             [
-#                 rx.set_value("confirm_password", ""),
-#                 rx.set_focus("confirm_password"),
-#             ]
-#             # reset state variable again
-#             self.is_loading = False
-#             yield
-#             return
+        password = form_data["password"]
+        if not password:
+            self.error_message = "Password cannot be empty"
+            rx.set_focus("password")
+            # reset state variable again
+            self.is_loading = False
+            yield
+            return
+        if password != form_data["confirm_password"]:
+            self.error_message = "Passwords do not match"
+            [
+                rx.set_value("confirm_password", ""),
+                rx.set_focus("confirm_password"),
+            ]
+            # reset state variable again
+            self.is_loading = False
+            yield
+            return
 
-#         # sign up with supabase
-#         supabase_client().auth.sign_up(
-#             {
-#                 "email": email,
-#                 "password": password,
-#             }
-#         )
+        # sign up with supabase
+        supabase_client().auth.sign_up(
+            {
+                "email": email,
+                "password": password,
+            }
+        )
 
-#         # Set success and redirect to login page after a brief delay.
-#         self.error_message = ""
-#         self.success = True
-#         self.is_loading = False
-#         yield
-#         await asyncio.sleep(3)
-#         yield [rx.redirect(LOGIN_ROUTE), RegistrationState.set_success(False)]
+        # Set success and redirect to login page after a brief delay.
+        self.error_message = ""
+        self.success = True
+        self.is_loading = False
+        yield
+        await asyncio.sleep(3)
+        yield [rx.redirect(LOGIN_ROUTE), RegistrationState.set_success(False)]
 
 
 def reg_success() -> rx.Component:
@@ -159,7 +159,6 @@ def reg_panel() -> rx.Component:
                         ],
                     ),
                     rx.form.submit(
-                        # rx.button("Регистрация", is_loading=LoginState.is_loading),
                         rx.button("Регистрация"),
                         as_child=True,
                     ),
@@ -167,7 +166,7 @@ def reg_panel() -> rx.Component:
                     spacing="2",
                     width="100%",
                 ),
-                # on_submit=RegistrationState.handle_registration,
+                on_submit=RegistrationState.handle_registration,
                 reset_on_submit=False,
             ),
             width="48%",
@@ -204,8 +203,7 @@ def registration_page() -> rx.Component:
 
     return rx.fragment(
         rx.cond(
-            False,
-            # RegistrationState.success,
+            RegistrationState.success,
             rx.vstack(
                 reg_success(),
                 rx.spinner(),
@@ -213,10 +211,10 @@ def registration_page() -> rx.Component:
                 justify="center",
             ),
             rx.vstack(
-                # rx.cond(  # conditionally show error messages
-                #     RegistrationState.error_message != "",
-                #     rx.text(RegistrationState.error_message),
-                # ),
+                rx.cond(  # conditionally show error messages
+                    RegistrationState.error_message != "",
+                    rx.text(RegistrationState.error_message),
+                ),
                 reg_panel2(),
                 align="center",
                 justify="center",

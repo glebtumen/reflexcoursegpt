@@ -1,1 +1,4 @@
-reflex==0.6.8
+reflex==0.7.0
+supabase==2.13.0
+openai==1.63.2
+dotenv
